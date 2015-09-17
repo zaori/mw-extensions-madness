@@ -10,29 +10,16 @@
  * @licence GNU General Public Licence 2.0 or later
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-$wgExtensionCredits['parserhook'][] = array(
-	'path' => __FILE__,
-	'name' => 'Madness',
-	'version' => '0.3.squid',
-	'author' => array( 'Calimonius the Estrange' ),
-	'descriptionmsg' => 'madness-desc',
-);
-
-$wgAutoloadClasses['ExtMadness'] = dirname( __FILE__ ) . '/Madness.body.php';
-$wgExtensionMessagesFiles['Madness'] = dirname( __FILE__ ) . '/Madness.i18n.php';
-$wgExtensionMessagesFiles['MadnessMagic'] = dirname( __FILE__ ) . '/' . 'Madness.i18n.magic.php';
-
-$wgHooks['ParserFirstCallInit'][] = 'wfRegisterMadness';
-
-/**
- * @param $parser Parser
- * @return bool
- */
-function wfRegisterMadness( $parser ) {
-	$parser->setFunctionHook( 'madness', 'ExtMadness::madness' );
-	return true;
+if ( function_exists( 'wfLoadExtension' ) ) {
+	wfLoadExtension( 'Madness' );
+	// Keep i18n globals so mergeMessageFileList.php doesn't break
+	$wgMessagesDirs['Madness'] = __DIR__ . '/i18n';
+	$wgExtensionMessagesFiles['Madness'] = __DIR__ . '/Madness.alias.php';
+	wfWarn(
+		'Deprecated PHP entry point used for Madness extension. Please use wfLoadExtension instead, ' .
+		'see https://www.mediawiki.org/wiki/Extension_registration for more details.'
+	);
+	return;
+} else {
+	die( 'This version of the Madness extension requires MediaWiki 1.25+' );
 }

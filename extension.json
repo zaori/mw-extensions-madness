@@ -1,0 +1,23 @@
+{
+	"name": "Madness",
+	"version": "0.3.squid",
+	"author": [
+		"Calimonius the Estrange"
+	],
+	"descriptionmsg": "madness-desc",
+	"type": "parserhook",
+	"ExtensionMessagesFiles": {
+		"Madness": "Madness.i18n.php",
+		"MadnessMagic": "Madness.i18n.magic.php"
+	},
+	"AutoloadClasses": {
+		"ExtMadness": "Madness.body.php",
+		"MadnessHooks": "Madness.hooks.php"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": [
+			"MadnessHooks::wfRegisterMadness"
+		]
+	},
+	"manifest_version": 1
+}
