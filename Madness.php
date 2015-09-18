@@ -14,7 +14,6 @@ if ( function_exists( 'wfLoadExtension' ) ) {
 	wfLoadExtension( 'Madness' );
 	// Keep i18n globals so mergeMessageFileList.php doesn't break
 	$wgMessagesDirs['Madness'] = __DIR__ . '/i18n';
-	$wgExtensionMessagesFiles['Madness'] = __DIR__ . '/Madness.alias.php';
 	wfWarn(
 		'Deprecated PHP entry point used for Madness extension. Please use wfLoadExtension instead, ' .
 		'see https://www.mediawiki.org/wiki/Extension_registration for more details.'

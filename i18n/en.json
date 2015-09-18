@@ -1,0 +1,7 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"madness-desc": "A parser function to query the Madness",
+	"madness-input-error": "Improper query"
+}

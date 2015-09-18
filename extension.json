@@ -7,16 +7,19 @@
 	"descriptionmsg": "madness-desc",
 	"type": "parserhook",
 	"ExtensionMessagesFiles": {
-		"Madness": "Madness.i18n.php",
 		"MadnessMagic": "Madness.i18n.magic.php"
 	},
+	"MessagesDirs": {
+		"Madness": [
+			"i18n"
+		]
+	},
 	"AutoloadClasses": {
-		"ExtMadness": "Madness.body.php",
-		"MadnessHooks": "Madness.hooks.php"
+		"ExtMadness": "Madness.body.php"
 	},
 	"Hooks": {
 		"ParserFirstCallInit": [
-			"MadnessHooks::wfRegisterMadness"
+			"ExtMadness::onParserFirstCallInit"
 		]
 	},
 	"manifest_version": 1

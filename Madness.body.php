@@ -3,6 +3,15 @@
 class ExtMadness {
 
 	/**
+	* @param $parser Parser
+	* @return bool
+	*/
+	static function onParserFirstCallInit( $parser ) {
+		$parser->setFunctionHook( 'madness', 'ExtMadness::madness' );
+		return true;
+	}
+
+	/**
 	 * Since it's a different database, create an object for it
 	 * @return DatabaseBase
 	 */
@@ -20,10 +29,6 @@ class ExtMadness {
 		return $dbr;
 	}
 
-	static function formatList() {
-
-	}
-
 	/**
 	 * @param $parser Parser
 	 * @param $textID string input
@@ -35,7 +40,7 @@ class ExtMadness {
 		global $wgMadnessServer, $wgMadnessDB, $wgMadnessUser, $wgMadnessPassword;
 		$dbr = self::setupDB( $wgMadnessServer, $wgMadnessUser, $wgMadnessPassword, $wgMadnessDB );
 
-		# Random line
+		// Random line
 		if ( $textID == '' || $textID == 'random' ) {
 			$res = $dbr->selectField(
 				'line',
@@ -45,19 +50,15 @@ class ExtMadness {
 				array( 'ORDER BY' => 'rand()' )
 			);
 			$text = $res;
-		}
-		# Specific line
-		elseif ( is_numeric( $textID ) ) {
+		} elseif ( is_numeric( $textID ) ) { // Specific line
 			$res = $dbr->selectField(
 				'line',
 				'line_text',
-				"line_id = $textID",
+				array( 'line_id' => $textID ),
 				__METHOD__
 			);
 			$text = $res;
-		}
-		# List
-		elseif ( $textID == 'all' ) {
+		} elseif ( $textID == 'all' ) { // List
 			$format = $search1;
 			$text = '';
 
@@ -66,38 +67,14 @@ class ExtMadness {
 				'line_text',
 				'',
 				__METHOD__
-			);/*
-			if ( $format == '' || $format == 'list' ) {
-				foreach ( $res as $row ) {
-					$text .= '*' . utf8_decode( $row->line_text ) . "\n";
-				}
-			}
-			elseif ( $format == 'paragraph' ) {
-				foreach ( $res as $row ) {
-					$text .= '\n' . utf8_decode( $row->line_text ) . '\n';
-				}
-			}
-			elseif ( $format == 'inline' ) {
-				foreach ( $res as $row ) {
-					$text .= utf8_decode( $row->line_text ) . ' ';
-				}
-			}*/
+			);
 			foreach ( $res as $row ) {
 				$text .= '*' . $row->line_text . "\n";
 			}
-		}/*
-		# List
-		elseif ( $textID == 'search' ) {
-			# Rename variables accordingly
-			$searchKey = $search1;
-			$format = $search2;
-
-		}*/
-		else {
-			$text = 'Improper query.';
+		} else {
+			$text = wfMessage( 'madness-input-error' )->text();
 		}
 
-		$dbr->close();
 		return $text;
 	}
 }
